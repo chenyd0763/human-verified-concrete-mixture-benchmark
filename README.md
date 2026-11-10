@@ -1,37 +1,49 @@
 # Human-Verified Concrete Mixture Benchmark
 
-This repository contains the human-verified reference dataset and audit-corrected evaluation results supporting the manuscript:
+This repository contains the public data and evaluation materials supporting the manuscript *From Waste-Derived Concrete Literature to Traceable Mixture Data for Carbonation Assessment: An Evidence-Grounded, Language-Model-Assisted Workflow*.
 
-> *From Waste-Derived Concrete Literature to Traceable Mixture Data for Carbonation Assessment: An Evidence-Grounded, Language-Model-Assisted Workflow*
+## Public release
 
-## Dataset contents
+The benchmark contains consensus reference records for 18 blind-test articles:
 
-The Excel workbook contains eight worksheets:
+- 175 concrete mixture records;
+- 566 compressive-strength observations;
+- material metadata and field-level source locations;
+- aggregate and paper-level evaluation counts for configurations A0--A6.
 
-- `ReadMe`: dataset scope, verification protocol, and interpretation notes;
-- `Paper_Index`: bibliographic metadata for the 18 blind-test articles;
-- `Mixtures`: 175 human-verified concrete mixture records;
-- `Strength_Observations`: 566 compressive-strength observations;
-- `Material_Metadata`: reported material identity, treatment, density, and chemistry information;
-- `Source_Evidence`: page- and location-level provenance for extracted fields;
-- `Evaluation_Results`: final audit-corrected A0–A6 aggregate metrics;
-- `Data_Dictionary`: definitions of key fields and metrics.
+A primary annotator reconstructed the eligible records from the source articles. A second concrete researcher verified all critical numerical fields against the original articles. Disagreements were resolved by consensus through direct reinspection of the relevant tables, figures, and passages. The released workbook contains the resulting consensus reference records used for the reported evaluation.
 
-## Human verification
+## Repository contents
 
-A primary annotator reconstructed all eligible mixtures and strength observations from the 18 full-text articles. A second concrete researcher independently reviewed the critical numerical fields in all 18 articles against the original sources. Disagreements were resolved by consensus through direct reinspection of the relevant tables, figures, and passages. Blank cells indicate values that were not reported, were not applicable, or could not be defensibly resolved from the source article.
+- `data/`: human-verified benchmark workbook;
+- `corpus/`: article inventory and corpus-screening description;
+- `prompts/`: frozen extraction prompts used for A0--A6;
+- `schema/`: documented release schema and the 11 scored core fields;
+- `scoring/`: metric definitions, paper-level counts, and a script that reproduces the published aggregate metrics;
+- `analysis/`: bootstrap and downstream scenario-analysis scripts;
+- `metadata/`: final release status, execution record, correction log, and checksums.
+
+## Reproduce the aggregate metrics
+
+Python 3.9 or later is sufficient; the scoring script uses only the standard library.
+
+```bash
+python scoring/score_aggregate_metrics.py \
+  scoring/input/paper_level_scoring_counts.csv \
+  scoring/reproduced_aggregate_metrics.csv
+```
+
+The script calculates mixture recall, core-field accuracy, complete-row accuracy, and unsupported non-null rate from the released paper-level counts. The expected published values are stored in `scoring/tests/expected_published_aggregate_metrics.csv`.
+
+## Source access and copyright
+
+The repository identifies all source articles and records page and table or figure locations for the annotated evidence. Publisher-provided article files and verbatim source passages are not redistributed. Readers can verify the listed locations in the cited articles through their institutional or lawful access.
 
 ## Version
 
-- Dataset version: `v1.1`
-- Release date: 18 October 2026
-- File: `S2_minimal_dataset_human_verified_v1.1.xlsx`
-
-## Citation
-
-Until the associated article is published, please cite this repository and the `v1.1` release URL. The formal article citation and data DOI will be added when available.
+- Release: `v1.2`
+- Reference status: human-verified consensus benchmark
 
 ## License
 
-The dataset and accompanying documentation are licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0). See `LICENSE.md`.
-
+The released dataset, documentation, and original analysis code are licensed under CC BY 4.0. Bibliographic metadata and third-party article content remain subject to their original terms.

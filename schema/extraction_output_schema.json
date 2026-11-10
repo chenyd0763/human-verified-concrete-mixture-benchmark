@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Concrete mixture extraction output",
+  "description": "Documented release schema derived from the fixed JSON output template in FROZEN_EXTRACTION_PROMPTS_v1.0.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["paper_id", "paper_identity", "materials", "mixes"],
+  "properties": {
+    "paper_id": {"type": "string"},
+    "paper_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "doi", "journal", "year", "identity_evidence"],
+      "properties": {
+        "title": {"type": ["string", "null"]},
+        "doi": {"type": ["string", "null"]},
+        "journal": {"type": ["string", "null"]},
+        "year": {"type": ["integer", "null"]},
+        "identity_evidence": {"$ref": "#/$defs/evidence"}
+      }
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["material_id", "raw_name", "normalized_family", "source_or_treatment", "mixture_role", "chemistry_pct", "density_g_cm3", "evidence"],
+        "properties": {
+          "material_id": {"type": "string"},
+          "raw_name": {"type": ["string", "null"]},
+          "normalized_family": {"type": ["string", "null"]},
+          "source_or_treatment": {"type": ["string", "null"]},
+          "mixture_role": {"enum": ["cement_replacement", "binder_replacement", "aggregate_replacement", "activator", "other", null]},
+          "chemistry_pct": {
+            "type": "object",
+            "properties": {
+              "CaO": {"type": ["number", "null"]}, "SiO2": {"type": ["number", "null"]},
+              "Al2O3": {"type": ["number", "null"]}, "Fe2O3": {"type": ["number", "null"]},
+              "MgO": {"type": ["number", "null"]}, "LOI": {"type": ["number", "null"]}
+            }
+          },
+          "density_g_cm3": {"type": ["number", "null"]},
+          "evidence": {"type": "array", "items": {"$ref": "#/$defs/fieldEvidence"}}
+        }
+      }
+    },
+    "mixes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mix_id", "paired_control_id", "material_id", "replacement_target", "replacement_basis", "replacement_pct_reported", "cement_type", "cement_kg_m3", "waste_binder_kg_m3", "other_binders", "water_kg_m3", "fine_aggregate_kg_m3", "coarse_aggregate_kg_m3", "recycled_coarse_aggregate_kg_m3", "admixtures", "compressive_strengths", "source_evidence", "derived_qc", "en_interface", "record_status", "review_flags"],
+        "properties": {
+          "mix_id": {"type": "string"},
+          "paired_control_id": {"type": ["string", "null"]},
+          "material_id": {"type": ["string", "null"]},
+          "replacement_target": {"enum": ["cement", "total_binder", "fine_aggregate", "coarse_aggregate", "other", null]},
+          "replacement_basis": {"enum": ["mass", "volume", null]},
+          "replacement_pct_reported": {"type": ["number", "null"]},
+          "cement_type": {"type": ["string", "null"]},
+          "cement_kg_m3": {"type": ["number", "null"]},
+          "waste_binder_kg_m3": {"type": ["number", "null"]},
+          "other_binders": {"type": "array", "items": {"$ref": "#/$defs/binder"}},
+          "water_kg_m3": {"type": ["number", "null"]},
+          "fine_aggregate_kg_m3": {"type": ["number", "null"]},
+          "coarse_aggregate_kg_m3": {"type": ["number", "null"]},
+          "recycled_coarse_aggregate_kg_m3": {"type": ["number", "null"]},
+          "admixtures": {"type": "array", "items": {"$ref": "#/$defs/admixture"}},
+          "compressive_strengths": {"type": "array", "items": {"$ref": "#/$defs/strength"}},
+          "source_evidence": {"type": "array", "items": {"$ref": "#/$defs/fieldEvidence"}},
+          "derived_qc": {"$ref": "#/$defs/derivedQc"},
+          "en_interface": {"$ref": "#/$defs/enInterface"},
+          "record_status": {"enum": ["READY", "REVIEW", "BLOCKED"]},
+          "review_flags": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object", "required": ["page", "location", "snippet"],
+      "properties": {"page": {"type": ["integer", "null"]}, "location": {"type": ["string", "null"]}, "snippet": {"type": ["string", "null"]}}
+    },
+    "fieldEvidence": {
+      "type": "object", "required": ["field", "page", "location", "snippet"],
+      "properties": {"field": {"type": "string"}, "reported_value": {"type": ["string", "null"]}, "page": {"type": ["integer", "null"]}, "location": {"type": ["string", "null"]}, "snippet": {"type": ["string", "null"]}}
+    },
+    "binder": {"type": "object", "required": ["name", "kg_m3"], "properties": {"name": {"type": "string"}, "kg_m3": {"type": ["number", "null"]}}},
+    "admixture": {"type": "object", "required": ["name", "amount", "unit"], "properties": {"name": {"type": "string"}, "amount": {"type": ["number", "null"]}, "unit": {"type": ["string", "null"]}}},
+    "strength": {
+      "type": "object", "required": ["age_days", "strength_MPa", "specimen", "basis", "replicate_n", "evidence"],
+      "properties": {"age_days": {"type": ["number", "null"]}, "strength_MPa": {"type": ["number", "null"]}, "specimen": {"type": ["string", "null"]}, "basis": {"enum": ["mean", "characteristic", "declared_class", "graph_derived", "other", null]}, "replicate_n": {"type": ["integer", "null"]}, "evidence": {"$ref": "#/$defs/evidence"}}
+    },
+    "derivedQc": {
+      "type": "object",
+      "properties": {"binder_kg_m3": {"type": ["number", "null"]}, "replacement_pct_calculated": {"type": ["number", "null"]}, "replacement_difference_pp": {"type": ["number", "null"]}, "water_binder_calculated": {"type": ["number", "null"]}, "water_binder_difference": {"type": ["number", "null"]}, "co_intervention": {"type": ["boolean", "null"]}}
+    },
+    "enInterface": {
+      "type": "object",
+      "properties": {"reported_characteristic_cylinder_MPa": {"type": ["number", "null"]}, "fcm_28d_cylinder_MPa": {"type": ["number", "null"]}, "fck_proxy_MPa": {"type": ["number", "null"]}, "strength_band": {"enum": ["<16 MPa", "16 to 20 MPa", "25 to 35 MPa", ">35 MPa", "NO_TABLE_VALUE", null]}, "mapping_status": {"enum": ["SOURCE_CLASS", "RESEARCH_PROXY", "BLOCKED", null]}, "mapping_note": {"type": ["string", "null"]}}
+    }
+  }
+}

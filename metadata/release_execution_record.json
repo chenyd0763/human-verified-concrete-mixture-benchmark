@@ -1,0 +1,49 @@
+{
+  "release": "v1.2",
+  "reference_status": "human_verified_consensus",
+  "development_articles": 6,
+  "blind_test_articles": 18,
+  "blind_reference_mixtures": 175,
+  "evaluated_configurations": ["A0", "A1", "A2", "A3", "A4", "A5", "A6"],
+  "evaluated_runs": 126,
+  "provider_interface": "OpenAI through authenticated Codex CLI",
+  "evaluated_model_id": "gpt-5.6-sol",
+  "reasoning_effort": "medium",
+  "cli_version": "codex-cli 0.154.0-alpha.6.2",
+  "experiment_version": "v1.2",
+  "runner_version": "0.3.0-full-v1.2",
+  "prompt_version": "v1.0",
+  "document_representation": {
+    "tool": "pdfplumber",
+    "version": "0.11.9",
+    "layout": true,
+    "x_tolerance": 1,
+    "y_tolerance": 3,
+    "page_markers": true,
+    "ocr": false,
+    "vision": false,
+    "maximum_characters": 450000
+  },
+  "targeted_retrieval": {
+    "always_include_first_pages": 2,
+    "maximum_pages": 12
+  },
+  "runtime_controls": {
+    "temperature_requested_in_protocol": 0,
+    "temperature_effective": "not exposed by backend",
+    "immutable_model_snapshot": "not exposed by backend",
+    "random_seed": "not exposed by backend",
+    "maximum_input_tokens": "not exposed by backend",
+    "maximum_output_tokens": "not exposed by backend"
+  },
+  "scoring": {
+    "core_field_count": 11,
+    "numeric_absolute_tolerance": 0.011,
+    "missing_reference_row_denominator_policy": "all expected reference rows and fields remain in the denominator"
+  },
+  "notes": [
+    "The fixed JSON output template is embedded verbatim in the frozen prompt and is also documented in schema/extraction_output_schema.json.",
+    "The public scoring script reproduces the published aggregate metrics from released paper-level counts.",
+    "Publisher article files are not redistributed."
+  ]
+}

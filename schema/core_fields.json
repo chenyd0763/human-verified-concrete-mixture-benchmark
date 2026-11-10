@@ -1,0 +1,22 @@
+{
+  "version": "v1.2",
+  "core_field_count": 11,
+  "numeric_absolute_tolerance": 0.011,
+  "fields": [
+    "paired_control_id",
+    "material_id",
+    "replacement_target",
+    "replacement_basis",
+    "replacement_pct_reported",
+    "cement_kg_m3",
+    "waste_binder_kg_m3",
+    "water_kg_m3",
+    "fine_aggregate_kg_m3",
+    "coarse_aggregate_kg_m3",
+    "recycled_coarse_aggregate_kg_m3"
+  ],
+  "null_policy": "A null reference field matches only a null predicted field. A missing mixture contributes 11 incorrect core fields.",
+  "identifier_policy": "Rows are matched within each paper by source mixture identifier after trimming surrounding whitespace.",
+  "categorical_policy": "Categorical and identifier fields require exact normalized equality; null is distinct from an empty string.",
+  "numeric_policy": "Numeric values match when the absolute difference after unit normalization is no greater than 0.011."
+}
